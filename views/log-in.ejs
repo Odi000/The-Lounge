@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include('partials/html-head')  %>
+</head>
+
+<body>
+  <p>Go to <a href="/">homepage</a></p>
+  <form action="/log-in" method="post">
+    <label for="username">Username:</label>
+    <input name="username" id="username" type="text">
+    <br>
+    <label for="password">Password:</label>
+    <input name="password" id="password" type="password">
+    <br>
+    <button>Log in</button>
+  </form>
+</body>
+
+</html>
