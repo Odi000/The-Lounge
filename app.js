@@ -5,6 +5,7 @@ const path = require('node:path');
 const pool = require('./db/pool');
 const pgSession = require('connect-pg-simple')(session);
 const indexRouter = require('./routes/index');
+const errorController = require('./controllers/errorController');
 
 const app = express();
 
@@ -28,10 +29,10 @@ app.use((req, res, next) => {
     if (req.user) {
         res.locals.currentUser = req.user;
     }
-    
     next();
 })
 app.use('/', indexRouter);
+app.use(errorController.get);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, (error) => {
