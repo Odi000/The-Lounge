@@ -1,4 +1,5 @@
 const pool = require('./pool');
+const { formatDate } = require('./functions');
 
 module.exports = {
     getAllColumnsUsers: async () => {
@@ -35,7 +36,31 @@ module.exports = {
         const values = [id];
         const { rows } = await pool.query(query, values);
         const user = rows[0]
-        
+
         return user;
     },
+    getAllPosts: async () => {
+        const query = `SELECT posts.title,posts.content,posts.created_at,users.username AS author
+                FROM posts
+                INNER JOIN users
+                ON posts.author_id = users.id;
+        `;
+        const { rows } = await pool.query(query);
+
+        for (const row of rows) {
+            row.created_at = formatDate(row.created_at);
+        }
+
+        return rows;
+    },
+    becomeMember: async (userId) => {
+        const query = `UPDATE users
+                SET is_member = true
+                WHERE id = $1;`;
+        const values = [userId];
+        const result = await pool.query(query, values);
+
+        console.log(result);
+        return result;
+    }
 }

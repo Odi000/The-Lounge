@@ -1,6 +1,10 @@
+const db = require('../db/queries');
+const stylesheet = "styles.css";
+
 module.exports = {
-    get: (req, res) => {
-        console.log(req.user)
-        res.render('index', {})
+    get: async (req, res) => {
+        const posts = await db.getAllPosts();
+        console.log(posts)
+        res.render('index', { posts, stylesheet })
     }
 }

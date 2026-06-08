@@ -9,14 +9,93 @@
   <h1>Home Page</h1>
   <hr>
   <% if(locals.currentUser) {%>
-  <h3>You are logged in as <i style="background-color:black;color: white;padding: 3px 6px;border-radius: 3px;"><%= currentUser.username %></i></h3>
+  <h3>
+    You are logged in as
+    <i style="background-color:black;color: white;padding: 3px 6px;border-radius: 3px;">
+      <%= currentUser.username %>
+
+      <% if(currentUser.is_member) {%>
+      <img class="membership" src="/images/star.svg">
+      <% } %>
+    </i>
+  </h3>
   <br>
-  <a href="sign-out">Sign out</a>
-  <% } else { %>
-  <a href="/sign-up">Sign Up</a>
-  <br>
-  <a href="/log-in">Log In</a>
+  <% if(!currentUser.is_member) {%>
+  <button id="member">Become a Member</button>
   <% } %>
+  </a> <a href="sign-out">Sign out</a>
+  <% } else { %>
+  <a href="/log-in">Log In</a>
+  <br>
+  <a href="/sign-up">Sign Up</a>
+  <% } %>
+  <hr>
+  <h2>Posts</h3>
+    <div class="container">
+      <% if(locals.posts) {%>
+      <% posts.forEach(post=>{ %>
+      <div class="post">
+        <h3 class="title"><%= post.title %></h4>
+          <% if(locals.currentUser) {%>
+          <% if(currentUser.is_member) {%>
+          <p class="author"><%= post.author %></p>
+          <% } else { %>
+          <p class="author"> Anonymous (logged in)</p>
+          <% } %>
+          <% } else { %>
+          <p class="author"> Anonymous (logged out)</p>
+          <% } %>
+          <p class="timestamp"><%= post.created_at %></p>
+          <content><%= post.content %></content>
+      </div>
+      <%  %>
+      <% }) %>
+      <%  %>
+      <% } %>
+    </div>
 </body>
+<script>
+  const memberBtn = document.getElementById('member');
+  memberBtn.addEventListener('click', () => {
+    const container = document.createElement('div');
+    const popUp = document.createElement('div');
+    const title = document.createElement('h2');
+    const p = document.createElement('p');
+    const code = document.createElement('span');
+    const form = document.createElement('form');
+    const input = document.createElement('input');
+    const button = document.createElement('button');
+
+    container.addEventListener('click', handleClick)
+    container.classList.add('popup-container');
+    popUp.classList.add('popup');
+    title.textContent = "Enter Promo Code to Become a Member";
+    p.textContent = "Code: "
+    code.textContent = "AX51384";
+    input.id = "code"
+    input.name = "code"
+    button.textContent = "Submit";
+    form.action = "/become-member";
+    form.method = "POST"
+
+    p.appendChild(code);
+    form.appendChild(input);
+    form.appendChild(button);
+
+    popUp.appendChild(title);
+    popUp.appendChild(p);
+    popUp.appendChild(form);
+
+    container.appendChild(popUp);
+
+    document.body.appendChild(container);
+
+    function handleClick(e) {
+      if (e.target === this) {
+        this.remove()
+      }
+    }
+  })
+</script>
 
 </html>
