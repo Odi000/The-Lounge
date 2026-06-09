@@ -53,6 +53,13 @@ module.exports = {
 
         return rows;
     },
+    createPost: async ({ author_id, title, content, created_at }) => {
+        const query = "INSERT INTO posts (title,content,author_id,created_at) VALUES ($1,$2,$3,$4)";
+        const values = [title, content, author_id, created_at];
+        const result = (await pool.query(query, values)).rowCount;
+
+        return result;
+    },
     becomeMember: async (userId) => {
         const query = `UPDATE users
                 SET is_member = true

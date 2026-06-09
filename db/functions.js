@@ -1,7 +1,5 @@
 module.exports = {
-    formatDate: function () {
-        const date = new Date();
-
+    formatDate: function (date = new Date()) {
         const hours = String(date.getHours()).padStart(2, '0');
         const minutes = String(date.getMinutes()).padStart(2, '0');
 

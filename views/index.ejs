@@ -24,6 +24,7 @@
   <button id="member">Become a Member</button>
   <% } %>
   </a> <a href="sign-out">Sign out</a>
+  </a> <a href="create-post">Create post</a>
   <% } else { %>
   <a href="/log-in">Log In</a>
   <br>
@@ -36,15 +37,7 @@
       <% posts.forEach(post=>{ %>
       <div class="post">
         <h3 class="title"><%= post.title %></h4>
-          <% if(locals.currentUser) {%>
-          <% if(currentUser.is_member) {%>
-          <p class="author"><%= post.author %></p>
-          <% } else { %>
-          <p class="author"> Anonymous (logged in)</p>
-          <% } %>
-          <% } else { %>
-          <p class="author"> Anonymous (logged out)</p>
-          <% } %>
+          <p class="author">@<%= post.author %></p>
           <p class="timestamp"><%= post.created_at %></p>
           <content><%= post.content %></content>
       </div>
@@ -55,6 +48,8 @@
     </div>
 </body>
 <script>
+  <% if(locals.currentUser) {%>
+  <% if(!currentUser.is_member) { %>
   const memberBtn = document.getElementById('member');
   memberBtn.addEventListener('click', () => {
     const container = document.createElement('div');
@@ -96,6 +91,8 @@
       }
     }
   })
+  <% } %>
+  <% } %>
 </script>
 
 </html>
